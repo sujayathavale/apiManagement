@@ -1,0 +1,23 @@
+<!-- 
+    This file shows how to use validate-jwt policy for validating RSA signed JWT tokens, by specifying the using issuer's key modulus (n) and exponent (e) values in line.    
+    Substitute your own n/e values below.
+-->
+<policies>
+    <inbound>
+        <validate-jwt header-name="Authorization">
+            <issuer-signing-keys>
+                <key e="AQAB" n="pO2+BpARfKknqyr8sDRG1VmLlw5gBv518n2/LVyh16lMg2YUmDAmJCRX0BJQl0LytR5FIK0PTFDWAofguReR4OiLzQjiwKt9yFrnyslSYy74Ux4AdvkqC2Rv+nJ7NYaLIF3e/+gYrdK0buxpqZq+Hlh6Qugc/pYnxgODT59UllNGbKWVW3tlLxyxhj2KwzWpruhh/ECS1dq487u0ZAwgNPJw05Ku0ZMt9PET35Z4kr295ugxZl/nfdnfqu3lFBtbIoegtc2Rsok8YW0q91PeHOWMSu1B6PK4oZnEe3lcHRvCQzijG1SvBAAAzRdNZ6lgHsXS9XWyk/FyMcUhqImwOPOAzRtSUoDTafuBiefmB1+Rm1ypUM3PJxOrCP3qfImTmlmPE5AFMzg+oZqyUlh/kodWrfvIn2BbQ2BLWywghcUvUV1U6ipqNKh2D9Tg0853hO1KBOKcX2BJCZkr5zjg7NaYLC4nl/nn8DVqcjxoNghsH+a6IzwoPkcz/yAB8KmsNmCO9Ru9bjgl7xMbuAWAWVQqC4QY7VFYTW8W7Inc0e97mU4CJ5zwPw2DiVpjQD0anAWY1L+k61FCi93NKYhIQLw44ijIXbCdLaXjKxXu8FEkFW3hi1duxEIgqHve5TfHTddWi2xjVfl8X8vH4rDJIniBlQYeNVe/PvTRqjTHr2E="></key>
+            </issuer-signing-keys>
+        </validate-jwt>
+        <base />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

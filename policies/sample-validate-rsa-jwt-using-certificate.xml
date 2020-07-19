@@ -1,0 +1,24 @@
+<!-- 
+    This file shows how to use validate-jwt policy for validating RSA signed JWT tokens, by referencing the certificate uploaded to API Management.
+    Assumption is that the certificate (rsa-cert.pfx), containing issuer's keys, used to sign, validate JWT tokens, has already been uploaded to API Management
+    Substitute your own certificate-id value below
+-->
+<policies>
+    <inbound>
+        <validate-jwt header-name="Authorization">
+            <issuer-signing-keys>                
+                <key certificate-id="rsa-cert" />
+            </issuer-signing-keys>
+        </validate-jwt>
+        <base />
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
