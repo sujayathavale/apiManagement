@@ -1,4 +1,4 @@
-# New options to validate RSA signed JWT tokens
+# New options for Azure API Management validate-jwt policy
 
 ## Summary
 > This post highlights value of the enhanced validate-jwt API Management policy, for use with RSA signed JWT tokens. Also provides samples which are missing from official Microsoft documentation at the time of writing and related tips.
