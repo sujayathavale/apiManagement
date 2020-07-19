@@ -1,11 +1,15 @@
 # New options to validate RSA signed JWT tokens
 
 ## Summary
-> This post highlights value of the enhanced validate-jwt API Management policy, for use with RSA signed JWT tokens. It also provides samples which are missing from official documentation at the time of writing and related tips.
+> This post highlights value of the enhanced validate-jwt API Management policy, for use with RSA signed JWT tokens. Also provides samples which are missing from official Microsoft documentation at the time of writing and related tips.
 
-As part of the June release (https://azure.microsoft.com/en-us/updates/azure-api-management-update-june-2020/), two new configuration options for validate-jwt policy are available, to validate RSA signed JWT tokens. Prior to this, with the incumbent option (read below), API Management customers were required to provide Open ID Discovery endpoint themselves. The new options shift the burden away from customers, while also simplifying the composite SLA calculations for their solution.
+As part of the [June release](https://azure.microsoft.com/en-us/updates/azure-api-management-update-june-2020/) for Azure API Management, two new configuration options for validate-jwt policy are available, to validate RSA signed JWT tokens. Prior to this(incumbent option, read below), API Management customers were required to provide Open ID Discovery endpoint. 
 
-I have come across this pain point, for customers that have custom OAUTH solutions to provide RSA signed JWT tokens, but do not have Open ID Connect Discovery endpoints. Typically these customers are along their cloud adoption journey, where they have not yet consolidated their Identity and Access Management solutions, onto platforms like Azure AD, OKTA, etc, that will provide global, highly available Open ID Discovery endpoints, in addition to token endpoints, out of the box. These new options are very useful in these scenarios.
+This is not an issue for customers that have already consolidated IDAM capabilities onto mature platforms like Azure AD, OKTA, etc., which provide global, highly available Open ID Discovery endpoints out of the box.
+
+But this is a pain point for customers that are still early on cloud adoption journey and are still relying on custom OAuth solutions to provide RSA signed JWT tokens, but do not have Open ID Connect Discovery endpoints in place. They would be required to host this endpoint in order to use the validate-jwt APIM policy.
+
+The new options lift this burden away from customers, while also simplifying the composite SLA calculations for their solution.
 
 ## (Incumbent) Option - Open ID Discovery endpoint
 In this option, policy requires an Open ID Discovery endpoint to be specified via openid-config element. The policy expects to browse this endpoint and JWK Urls in the response, to discover the modulus and exponent (n/e) pair, which it will use for validating incoming RSA signed JWT tokens.
@@ -44,7 +48,15 @@ In this option, policy can directly reference the issuer's signing modulus and e
 ```
 
 ## Tips
-- Portal UI Glitch - At the time of writing, the Azure API Management portal (UI) does not seem to render the policy correctly when used with new options correctly. After saving policy, it seems to return to default/blank value, even though, under the hood the policy has been correctly applied. This could be a bug/feature yet to be released. Till then, to be sure what policy has taken effect, you can query the underlying ARM template via Azure Portal ('Settings --> Export Template' tab in API Management instance) or Resource Explorer. Alternatively, you can query the policy directly via Azure PowerShell module https://docs.microsoft.com/en-us/powershell/module/az.apimanagement/get-azapimanagementpolicy?view=azps-4.4.0
-- Security Consideration - Using Option to reference certificate, requires customer to upload *.pfx certificate, which will cotain both public and private keys. To limit that exposure, a consideration should be made whether using n/e pair option is safer, as that is meant for public distribution.
-- Tested Samples - please refer to following sample policies which I have tested out
-- 
+
+### Portal UI Glitch
+At the time of writing, the Azure API Management portal (UI) does not seem to render the policy correctly when used with new options correctly. After saving policy, it seems to return to default/blank value, even though, under the hood the policy has been correctly applied. This could be a bug/feature yet to be released. Till then, to be sure what policy has taken effect, you can query the underlying ARM template via Azure Portal ('Settings --> Export Template' tab in API Management instance) or Resource Explorer. Alternatively, you can query the policy directly via Azure PowerShell module [Get-AzApiManagementPolicy](https://docs.microsoft.com/en-us/powershell/module/az.apimanagement/get-azapimanagementpolicy?view=azps-4.4.0)
+
+### Security Consideration
+Using Option to reference certificate, requires customer to upload *.pfx certificate, which will cotain both public and private keys. To limit that exposure, a consideration should be made whether using n/e pair option is safer, as that is meant for public distribution.
+
+### Policy Samples
+
+Refer to following sample policies which I have tested out
+- [Validate using certificate](https://github.com/sujayathavale/apiManagement/blob/master/policies/sample-validate-rsa-jwt-using-certificate.xml)
+- [Validate using n/e pair](https://github.com/sujayathavale/apiManagement/blob/master/policies/sample-validate-rsa-jwt-using-key-ne-pair.xml)
